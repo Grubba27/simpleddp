@@ -214,7 +214,7 @@ class simpleDDP {
       }
     }
     if (!this.collections.hasOwnProperty(m.collection)) this.collections[m.collection] = [];
-    let newObj = Object.assign({ _id: m.id }, m.fields);
+    let newObj = Object.assign({ id: m.id }, m.fields);
     let i = this.collections[m.collection].push(newObj);
     let fields: {
       [key: string]: number;
