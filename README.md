@@ -29,7 +29,7 @@ DDP (protocol) [specification](https://github.com/meteor/meteor/blob/devel/packa
 
 ## Install
 
-`npm install simpleddp --save`
+`npm install meteor-sdk --save`
 
 ## [Documentation](https://gregivy.github.io/simpleddp/simpleDDP.html)
 
