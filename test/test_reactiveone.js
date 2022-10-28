@@ -47,7 +47,7 @@ describe('simpleDDP', function(){
 
     it('should return reactive object from filtered collection', function () {
 
-      let collectionReactiveObj = server.collection('foe').filter(e=>e.cat=='a').reactive().one();
+      let collectionReactiveObj = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
 
       assert.deepEqual(collectionReactiveObj.data(),{
         id: 'abc',
@@ -61,7 +61,7 @@ describe('simpleDDP', function(){
 
     it('should change reactive object data to another object because new object does not pass the filter', function (done) {
 
-      let collectionReactiveObj = server.collection('foe').filter(e=>e.cat=='a').reactive().one();
+      let collectionReactiveObj = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
 
       server.ddpConnection.emit('changed',{
         msg: 'changed',
@@ -85,7 +85,7 @@ describe('simpleDDP', function(){
 
     it('should update the reactive object', function (done) {
 
-      let collectionReactiveObj = server.collection('foe').filter(e=>e.cat=='a').reactive().one();
+      let collectionReactiveObj = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
 
       server.ddpConnection.emit('changed',{
         msg: 'changed',

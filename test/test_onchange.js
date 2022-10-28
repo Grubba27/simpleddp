@@ -113,7 +113,7 @@ describe('simpleDDP', function(){
 
     it('should detect changing the doc', function (done) {
 
-      server.collection('foe').filter((e,i,c)=>i==0).onChange(function (st) {
+      server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(function (st) {
         assert.deepEqual(st, {
           prev: {
             id: 'abc',
@@ -153,7 +153,7 @@ describe('simpleDDP', function(){
 
     it('should detect removing the doc', function (done) {
 
-      server.collection('foe').filter((e,i,c)=>i==0).onChange(function ({prev,next,fields,fieldsChanged,fieldsRemoved}) {
+      server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(function ({prev,next,fields,fieldsChanged,fieldsRemoved}) {
         assert.deepEqual(prev, {
           id: 'abc',
           name: 'test',
@@ -174,7 +174,7 @@ describe('simpleDDP', function(){
 
     it('should detect changing the doc\'s properties', function (done) {
 
-      server.collection('foe').filter((e,i,c)=>i==0).onChange(function (st) {
+      server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(function (st) {
         if ('name' in st.fields) {
           assert.strictEqual(st.prev.name, 'test');
           assert.strictEqual(st.next.name, 'new boy');
@@ -194,7 +194,7 @@ describe('simpleDDP', function(){
 
     it('should NOT detect changing other doc\'s properties', function (done) {
 
-      server.collection('foe').filter((e,i,c)=>i==0).onChange(function ({fields}) {
+      server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(function ({fields}) {
         if ('name' in fields) {
           done(new Error());
         }
@@ -216,7 +216,7 @@ describe('simpleDDP', function(){
 
       let trg = true;
 
-      let handler = server.collection('foe').filter((e,i,c)=>i==0).onChange(function ({prev,next}) {
+      let handler = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(function ({prev,next}) {
         if (trg) {
           done(new Error());
         } else if (prev.quality=='medium' && next.quality=='normal') {

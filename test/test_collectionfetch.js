@@ -39,9 +39,7 @@ describe('simpleDDP', function(){
 
     it('should return filtered collection', function () {
 
-      let collectionCut = server.collection('foe').filter((e,i,c)=>{
-        return e.id == 'abc' || e.quality;
-      }).fetch();
+      let collectionCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).fetch();
 
       assert.deepEqual(collectionCut,[{
         id: 'abc',
@@ -67,9 +65,7 @@ describe('simpleDDP', function(){
 
     it('should return [] because no such collection', function () {
 
-      let collectionCut = server.collection('abc').filter((e,i,c)=>{
-        return e.id == 'abc' || e.quality;
-      }).fetch();
+      let collectionCut = server.collection('abc').filter(newObjFullCopy, i - 1, this.collections[m.collection]).fetch();
 
       assert.deepEqual(collectionCut,[]);
 

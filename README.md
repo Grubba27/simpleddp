@@ -8,6 +8,8 @@
 </p>
 
 # SimpleDDP 🥚
+    
+### This is a reimplementation of simpleDDP using TypeScript and other modern tools. Under the hood is the simpleDDP that everyone knows and loves, but with a new look and feel. This is a work in progress, so please be patient with me as I work out the kinks.
 
 The aim of this library is to simplify the process of working with Meteor.js server over DDP protocol using external JS environments (like Node.js, Cordova, Ionic, ReactNative, etc).
 
@@ -114,31 +116,33 @@ let otherSub = server.subscribe("other_pub",'param1',2); // you can specify argu
 You can fetch all things you've subscribed for using [server.collection](https://gregivy.github.io/simpleddp/simpleDDP.html#collection) method.
 Also you can get reactive data sources (plain js objects which will be automatically updated if something changes on the server).
 
-
 ```javascript
-(async ()=>{
+(async () => {
 
   // call some method
   await server.call('somemethod');
 
-  let userSub = server.subscribe("user",userId);
+  let userSub = server.subscribe("user", userId);
   await userSub.ready();
 
   // get non-reactive user object
-  let user = server.collection('users').filter(user=>user.id==userId).fetch()[0];
+  let user = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).fetch()[0];
 
   // get reactive user object
-  let userReactiveCursor = server.collection('users').filter(user=>user.id==userId).reactive().one();
+  let userReactiveCursor = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
   let userReactiveObject = userReactiveCursor.data();
 
   // observing the changes
-  server.collection('users').filter(user=>user.id==userId).onChange(({prev,next})=>{
-    console.log('previus user data',state.prev);
-    console.log('next user data',state.next);
+  server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(({
+                                                                                                       prev,
+                                                                                                       next
+                                                                                                     }) => {
+    console.log('previus user data', state.prev);
+    console.log('next user data', state.next);
   });
 
   // observing changes in reactive data source
-  userReactiveCursor.onChange((newData)=>{
+  userReactiveCursor.onChange((newData) => {
     console.log('new user state', newData);
   });
 
@@ -149,19 +153,19 @@ Also you can get reactive data sources (plain js objects which will be automatic
   let reactiveCollection = server.collection('participants').reactive();
 
   // reactive reduce
-  let reducedReactive = reactiveCollection.reduce((acc,val,i,arr)=>{
-    if (i<arr.length-1)  {
+  let reducedReactive = reactiveCollection.reduce((acc, val, i, arr) => {
+    if (i < arr.length - 1) {
       return acc + val.age;
     } else {
-      return (acc + val.age)/arr.length;
+      return (acc + val.age) / arr.length;
     }
-  },0);
+  }, 0);
 
   // reactive mean age of all participants
   let meanAge = reducedReactive.data();
 
   // observing changes in reactive data source
-  userReactiveCursor.onChange((newData)=>{
+  userReactiveCursor.onChange((newData) => {
     console.log('new user state', newData);
   });
 })();

@@ -52,7 +52,7 @@ describe('simpleDDP', function(){
 
     it('should return reactive filtered collection', function () {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       assert.deepEqual(collectionReactiveCut.data(),[{
         id: 'abc',
@@ -77,7 +77,7 @@ describe('simpleDDP', function(){
 
     it('should return sorted reactive filtered collection', function () {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       collectionReactiveCut.sort((a,b)=>{
         if (a.name <= b.name) {
@@ -118,7 +118,7 @@ describe('simpleDDP', function(){
         }
       };
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive({sort:sortFunction});
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive({sort:sortFunction});
 
       assert.deepEqual(collectionReactiveCut.data(),[{
         id: 'def',
@@ -143,7 +143,7 @@ describe('simpleDDP', function(){
 
     it('should reactively remove element from filtered collection cut when element changes', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       let collectionLength1 = collectionReactiveCut.data().length;
 
@@ -166,7 +166,7 @@ describe('simpleDDP', function(){
 
     it('should reactively remove element from filtered collection cut when element is removed', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       let collectionLength1 = collectionReactiveCut.data().length;
 
@@ -187,7 +187,7 @@ describe('simpleDDP', function(){
 
     it('should reactively add element to filtered collection cut when element changes', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       let collectionLength1 = collectionReactiveCut.data().length;
 
@@ -210,7 +210,7 @@ describe('simpleDDP', function(){
 
     it('should reactively add element to filtered collection cut when element is added', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       let collectionLength1 = collectionReactiveCut.data().length;
 
@@ -232,7 +232,7 @@ describe('simpleDDP', function(){
 
     it('should reactively re-sort filtered collection cut when element changes', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       collectionReactiveCut.sort((a,b)=>{
         if (a.name <= b.name) {
@@ -276,7 +276,7 @@ describe('simpleDDP', function(){
 
     it('should reactively re-sort filtered collection cut when element added to filtered cut by being changed', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       collectionReactiveCut.sort((a,b)=>{
         if (a.name <= b.name) {
@@ -325,7 +325,7 @@ describe('simpleDDP', function(){
 
     it('should reactively re-sort filtered collection cut when element added to filtered cut by being added', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       collectionReactiveCut.sort((a,b)=>{
         if (a.name <= b.name) {
@@ -373,7 +373,7 @@ describe('simpleDDP', function(){
 
     it('should not add to reactive collection an object that does not pass the filter', function (done) {
 
-      let collectionReactiveCut = server.collection('foe').filter(e=>e.cat=='a').reactive();
+      let collectionReactiveCut = server.collection('foe').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive();
 
       server.ddpConnection.emit('added',{
         msg: 'added',

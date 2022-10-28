@@ -1,6 +1,6 @@
 {
-  "name": "simpleddp",
-  "version": "2.3.0",
+  "name": "meteor-sdk",
+  "version": "0.0.1",
   "description": "The aim of this library is to simplify the process of working with meteor server over DDP protocol using external JS environments",
   "keywords": [
     "ddp",
@@ -13,23 +13,15 @@
     "client",
     "meteor"
   ],
-  "main": "lib/simpleddp.js",
+  "main": "lib/simpleDDP.ts",
   "scripts": {
     "test": "npm run build && mocha",
     "docs": "jsdoc -c jsdoc_conf.json",
-    "build": "rm -rf lib && babel src --out-dir lib --no-comments",
+    "build": "tsc",
     "prepare": "npm run build",
     "prepublish": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gregivy/simpleddp.git"
-  },
-  "author": "Plyusch Gregory (aka Gregivy)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Gregivy/simpleddp/issues"
-  },
   "homepage": "https://gregivy.github.io/simpleddp/",
   "dependencies": {
     "clone-deep": "^4.0.1",
@@ -37,14 +29,13 @@
   },
   "devDependencies": {
     "@pixi/jsdoc-template": "^2.4.2",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1",
+    "@types/clone-deep": "^4.0.1",
+    "@types/ejson": "^2.2.0",
     "chai": "^4.2.0",
     "jsdoc": "^3.6.3",
-    "mocha": "^5.2.0",
+    "mocha": "^10.1.0",
+    "typescript": "^4.8.4",
+    "wolfy87-eventemitter": "^5.2.9",
     "ws": "^6.2.1"
   }
 }

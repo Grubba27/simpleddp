@@ -1,41 +1,21 @@
-/**
- * DDP event listener class.
- * @constructor
- * @param {String} eventname - Event name.
- * @param {Function} f - Function to run when event is fired.
- * @param {simpleDDP} ddplink - simpleDDP instance.
- */
-
-export class ddpEventListener {
-	constructor(eventname, f, ddplink) {
-		this._ddplink = ddplink;
-		this._eventname = eventname;
-		this._f = f;
-		this._started = false;
-		this.start();
-	}
-
-	/**
-   * Stops listening for server `event` messages.
-	 * You can start any stopped @see ddpEventListener at any time using `ddpEventListener.start()`.
-   * @public
-   */
-	stop() {
-		if (this._started) {
-			this._ddplink.ddpConnection.removeListener(this._eventname,this._f);
-			this._started = false;
-		}
-	}
-
-	/**
-	 * Usually you won't need this unless you stopped the @see ddpEventListener.
-	 * @see ddpEventListener starts on creation.
-   * @public
-   */
-	start() {
-		if (!this._started) {
-			this._ddplink.ddpConnection.on(this._eventname,this._f);
-			this._started = true;
-		}
-	}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ddpEventListener = void 0;
+function ddpEventListener(eventname, f, ddplink) {
+    let _started = false;
+    const start = () => {
+        if (!_started) {
+            ddplink.ddpConnection.on(eventname, f);
+            _started = true;
+        }
+    };
+    const stop = () => {
+        if (_started) {
+            ddplink.ddpConnection.removeListener(eventname, f);
+            _started = false;
+        }
+    };
+    start();
+    return { start, stop };
 }
+exports.ddpEventListener = ddpEventListener;
