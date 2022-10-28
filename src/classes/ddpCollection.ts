@@ -13,7 +13,7 @@ import simpleDDP from "../simpleDDP";
 
 export class ddpCollection {
 
-  private _filter: boolean | ((...args: any[]) => boolean) = false;
+  private _filter: boolean | ((...args: any[]) => number) = false;
   private _name: string;
   private _server: any;
   private ddpConnection: any;
@@ -30,7 +30,7 @@ export class ddpCollection {
    * @param {Function} f - Filter function, recieves as arguments object, index and array.
    * @return {this}
    */
-  filter(f: boolean | ((...args: any[]) => boolean) = false) {
+  filter(f: boolean | ((...args: any[]) => number) = false) {
     this._filter = f;
     return this;
   }
@@ -45,11 +45,11 @@ export class ddpCollection {
     const c = typeof data === 'string' ? EJSON.parse(data) : data;
 
     if (c[this._name]) {
-      c[this._name].forEach((doc: { id: string; fields: {}; }, i: number, arr: { id: string; fields: {}; }[]) => {
+      c[this._name].forEach((doc: { _id: string; fields: {}; }, i: number, arr: { _id: string; fields: {}; }[]) => {
         if (!this._filter || (this._filter && typeof this._filter === 'function' && this._filter(doc, i, arr))) {
           this.ddpConnection.emit('added', {
             msg: 'added',
-            id: doc.id,
+            _id: doc._id,
             collection: this._name,
             fields: doc.fields
           });
@@ -107,7 +107,7 @@ export class ddpCollection {
    * @return {ddpReactiveCollection}
    */
   reactive(settings: { skip?: number | undefined; limit?: number | undefined; sort?: false | ((a: any, b: any) => number) | undefined; } | undefined) {
-    return new ddpReactiveCollection(this, settings, this._filter as ((...args: any[]) => boolean));
+    return new ddpReactiveCollection(this, settings, this._filter  as ((...args: any[]) => number));
   }
 
   /**
@@ -118,7 +118,7 @@ export class ddpCollection {
    * @param {Function} filter
    * @return {ddpOnChange}
    */
-  onChange(f: <P extends { id: string }, N extends { id: string }, PP extends any[]>(args: { prev: P, next: N, predicatePassed: PP }) => any, filter: typeof this._filter) {
+  onChange(f: <P extends { _id: string }, N extends { _id: string }, PP extends any[]>(args: { prev: P, next: N, predicatePassed: PP }) => any, filter: typeof this._filter) {
     let obj = {
       collection: this._name,
       f: f,

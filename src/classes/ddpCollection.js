@@ -44,7 +44,7 @@ class ddpCollection {
                 if (!this._filter || (this._filter && typeof this._filter === 'function' && this._filter(doc, i, arr))) {
                     this.ddpConnection.emit('added', {
                         msg: 'added',
-                        id: doc.id,
+                        _id: doc._id,
                         collection: this._name,
                         fields: doc.fields
                     });

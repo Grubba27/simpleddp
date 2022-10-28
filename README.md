@@ -122,15 +122,15 @@ Also you can get reactive data sources (plain js objects which will be automatic
   // call some method
   await server.call('somemethod');
 
-  let userSub = server.subscribe("user", userId);
+  const userSub = server.subscribe("user", userId);
   await userSub.ready();
 
   // get non-reactive user object
-  let user = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).fetch()[0];
+  const user = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).fetch()[0];
 
   // get reactive user object
-  let userReactiveCursor = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
-  let userReactiveObject = userReactiveCursor.data();
+  const userReactiveCursor = server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).reactive().one();
+  const userReactiveObject = userReactiveCursor.data();
 
   // observing the changes
   server.collection('users').filter(newObjFullCopy, i - 1, this.collections[m.collection]).onChange(({
@@ -146,14 +146,14 @@ Also you can get reactive data sources (plain js objects which will be automatic
     console.log('new user state', newData);
   });
 
-  let participantsSub = server.subscribe("participants");
+  const participantsSub = server.subscribe("participants");
 
   await participantsSub.ready();
 
-  let reactiveCollection = server.collection('participants').reactive();
+  const reactiveCollection = server.collection('participants').reactive();
 
   // reactive reduce
-  let reducedReactive = reactiveCollection.reduce((acc, val, i, arr) => {
+  const reducedReactive = reactiveCollection.reduce((acc, val, i, arr) => {
     if (i < arr.length - 1) {
       return acc + val.age;
     } else {
@@ -162,7 +162,7 @@ Also you can get reactive data sources (plain js objects which will be automatic
   }, 0);
 
   // reactive mean age of all participants
-  let meanAge = reducedReactive.data();
+  const meanAge = reducedReactive.data();
 
   // observing changes in reactive data source
   userReactiveCursor.onChange((newData) => {

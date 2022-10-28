@@ -43,14 +43,14 @@ class ddpReactiveCollection {
                 else if (predicatePassed[0] == 1 && predicatePassed[1] == 0) {
                     // prev passing, next falling filter, removing old element
                     let i = this._rawData.findIndex((obj) => {
-                        return obj.id == prev.id;
+                        return obj._id == prev._id;
                     });
                     this._removeItem(i);
                 }
                 else if (predicatePassed[0] == 1 && predicatePassed[1] == 1) {
                     // both passing, should delete previous and add new
                     let i = this._rawData.findIndex((obj) => {
-                        return obj.id == prev.id;
+                        return obj._id == prev._id;
                     });
                     this._smartUpdate(next, i);
                 }
@@ -64,7 +64,7 @@ class ddpReactiveCollection {
                 // element was removed and is passing the filter, so it was in newCollection
                 // removing old element
                 let i = this._rawData.findIndex((obj) => {
-                    return obj.id == prev.id;
+                    return obj._id == prev._id;
                 });
                 this._removeItem(i);
             }
@@ -79,7 +79,7 @@ class ddpReactiveCollection {
             this._tickers.forEach((ticker) => {
                 ticker(this.data());
             });
-        }, filter ? filter : (_) => true);
+        }, filter ? filter : (_) => 1);
         this.started = false;
         this.start();
     }

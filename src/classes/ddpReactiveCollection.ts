@@ -26,7 +26,7 @@ export class ddpReactiveCollection {
   private _changeHandler;
   private started: boolean;
 
-  constructor(ddpCollectionInstance: ddpCollection, settings?: { skip?: number, limit?: number, sort?: false | ((a: any, b: any) => number) }, filter?: (...doc: any[]) => boolean) {
+  constructor(ddpCollectionInstance: ddpCollection, settings?: { skip?: number, limit?: number, sort?: false | ((a: any, b: any) => number) }, filter?: (...doc: any[]) => number) {
     this._skip = settings && typeof settings.skip === 'number' ? settings.skip : 0;
     this._limit = settings && typeof settings.limit === 'number' ? settings.limit : Infinity;
     this._sort = settings && typeof settings.sort === 'function' ? settings.sort : false;
@@ -53,13 +53,13 @@ export class ddpReactiveCollection {
         } else if (predicatePassed[0] == 1 && predicatePassed[1] == 0) {
           // prev passing, next falling filter, removing old element
           let i = this._rawData.findIndex((obj) => {
-            return obj.id == prev.id;
+            return obj._id == prev._id;
           });
           this._removeItem(i);
         } else if (predicatePassed[0] == 1 && predicatePassed[1] == 1) {
           // both passing, should delete previous and add new
           let i = this._rawData.findIndex((obj) => {
-            return obj.id == prev.id;
+            return obj._id == prev._id;
           });
           this._smartUpdate(next, i);
         }
@@ -71,7 +71,7 @@ export class ddpReactiveCollection {
         // element was removed and is passing the filter, so it was in newCollection
         // removing old element
         let i = this._rawData.findIndex((obj) => {
-          return obj.id == prev.id;
+          return obj._id == prev._id;
         });
         this._removeItem(i);
       }
@@ -90,7 +90,7 @@ export class ddpReactiveCollection {
       this._tickers.forEach((ticker) => {
         ticker(this.data());
       });
-    }, filter ? filter : (_: any) => true);
+    }, filter ? filter : (_: any) => 1);
 
     this.started = false;
 
