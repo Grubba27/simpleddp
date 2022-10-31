@@ -43,7 +43,7 @@ export type DDPMessage =
     params: any[];
     result: any;
     sub: any;
-    subs: string| string[]
+    subs: string | string[]
     filter: (newObjFullCopy: { _id: any }, number: number, collection1: any[]) => any;
   };
 
@@ -206,7 +206,7 @@ class simpleDDP {
     // m is always the same, it is probably worth copying
     if (this.collections.hasOwnProperty(m.collection)) {
       let i = this.collections[m.collection].findIndex((obj) => {
-        return obj.id == m.id;
+        return obj._id == m.id;
       });
       if (i > -1) {
         // new sub knows nothing about old sub
@@ -246,7 +246,7 @@ class simpleDDP {
   dispatchChanged(m: DDPMessage) {
     if (!this.collections.hasOwnProperty(m.collection)) this.collections[m.collection] = [];
     let i = this.collections[m.collection].findIndex((obj) => {
-      return obj.id == m.id;
+      return obj._id == m.id;
     });
     if (i > -1) {
       const t = this.collections[m.collection][i];
@@ -311,7 +311,7 @@ class simpleDDP {
   dispatchRemoved(m: DDPMessage) {
     if (!this.collections.hasOwnProperty(m.collection)) this.collections[m.collection] = [];
     let i = this.collections[m.collection].findIndex((obj) => {
-      return obj.id == m.id;
+      return obj._id == m.id;
     });
     if (i > -1) {
       let prevProps;
@@ -566,7 +566,7 @@ class simpleDDP {
    * @param {Object|string} data - ESJON string or EJSON.
    * @return {Promise} - Resolves when data is successfully imported.
    */
-  importData(data : string | object) {
+  importData(data: string | object) {
     return new Promise<void>((resolve, reject) => {
       let c = typeof data === 'string' ? EJSON.parse(data) : data;
 

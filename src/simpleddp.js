@@ -144,7 +144,7 @@ class simpleDDP {
         // m is always the same, it is probably worth copying
         if (this.collections.hasOwnProperty(m.collection)) {
             let i = this.collections[m.collection].findIndex((obj) => {
-                return obj.id == m.id;
+                return obj._id == m.id;
             });
             if (i > -1) {
                 // new sub knows nothing about old sub
@@ -184,7 +184,7 @@ class simpleDDP {
         if (!this.collections.hasOwnProperty(m.collection))
             this.collections[m.collection] = [];
         let i = this.collections[m.collection].findIndex((obj) => {
-            return obj.id == m.id;
+            return obj._id == m.id;
         });
         if (i > -1) {
             const t = this.collections[m.collection][i];
@@ -249,7 +249,7 @@ class simpleDDP {
         if (!this.collections.hasOwnProperty(m.collection))
             this.collections[m.collection] = [];
         let i = this.collections[m.collection].findIndex((obj) => {
-            return obj.id == m.id;
+            return obj._id == m.id;
         });
         if (i > -1) {
             let prevProps;

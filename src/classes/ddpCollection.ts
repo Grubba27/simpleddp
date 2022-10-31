@@ -13,7 +13,7 @@ import simpleDDP from "../simpleDDP";
 
 export class ddpCollection<T> {
 
-  private _filter: boolean | ((value: T, index: number, array: T[]) => value is any) = false;
+  private _filter: boolean | ((value: T, index: number, array: T[]) => any) = false;
   private _name: string;
   private _server: any;
   private ddpConnection: any;
@@ -30,7 +30,7 @@ export class ddpCollection<T> {
    * @param {Function} f - Filter function, recieves as arguments object, index and array.
    * @return {this}
    */
-  filter<S extends T>(f: boolean | ((value: T, index: number, array: T[]) => value is S) = false) {
+  filter<S extends any>(f: boolean | ((value: T, index: number, array: T[]) => S) = false) {
     this._filter = f;
     return this;
   }
@@ -108,7 +108,7 @@ export class ddpCollection<T> {
    * @return {ddpReactiveCollection}
    */
   reactive(settings: { skip?: number | undefined; limit?: number | undefined; sort?: false | ((a: any, b: any) => number) | undefined; } | undefined) {
-    return new ddpReactiveCollection<T>(this, settings, this._filter );
+    return new ddpReactiveCollection<T>(this, settings, this._filter);
   }
 
   /**
@@ -119,7 +119,7 @@ export class ddpCollection<T> {
    * @param {Function} filter
    * @return {ddpOnChange}
    */
-  onChange(f: <P extends { _id: string }, N extends { _id: string }, PP extends any[]>(args: { prev: P, next: N, predicatePassed: PP }) => any, filter?: typeof this._filter) {
+  onChange(f: <P extends { _id: string } & T, N extends { _id: string } & T, PP extends any[]>(args: { prev?: P, next?: N, predicatePassed: PP }) => any, filter?: typeof this._filter) {
     let obj = {
       collection: this._name,
       f: f,
