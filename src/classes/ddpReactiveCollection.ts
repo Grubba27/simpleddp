@@ -26,7 +26,7 @@ export class ddpReactiveCollection<T> {
   private _changeHandler;
   private started: boolean;
 
-  constructor(ddpCollectionInstance: ddpCollection<T>, settings?: { skip?: number; limit?: number; sort?: false | ((a: any, b: any) => number) }, filter?: boolean | ((value: T, index: number, array: T[]) => any)) {
+  constructor(ddpCollectionInstance: ddpCollection<T>, settings?: { skip?: number; limit?: number; sort?: false | ((a: T, b: T) => number) }, filter?: boolean | ((value: T, index: number, array: T[]) => any)) {
     this._skip = settings && typeof settings.skip === 'number' ? settings.skip : 0;
     this._limit = settings && typeof settings.limit === 'number' ? settings.limit : Infinity;
     this._sort = settings && typeof settings.sort === 'function' ? settings.sort : false;

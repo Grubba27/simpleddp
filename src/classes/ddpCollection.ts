@@ -107,7 +107,7 @@ export class ddpCollection<T> {
    * @param {Object} [settings={skip:0,limit:Infinity,sort:null}]
    * @return {ddpReactiveCollection}
    */
-  reactive(settings: { skip?: number | undefined; limit?: number | undefined; sort?: false | ((a: any, b: any) => number) | undefined; } | undefined) {
+  reactive(settings: { skip?: number | undefined; limit?: number | undefined; sort?: false | ((a: T, b: T) => number) | undefined; } | undefined) {
     return new ddpReactiveCollection<T>(this, settings, this._filter);
   }
 
