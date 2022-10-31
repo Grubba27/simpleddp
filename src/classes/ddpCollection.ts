@@ -118,7 +118,7 @@ export class ddpCollection {
    * @param {Function} filter
    * @return {ddpOnChange}
    */
-  onChange(f: <P extends { _id: string }, N extends { _id: string }, PP extends any[]>(args: { prev: P, next: N, predicatePassed: PP }) => any, filter: typeof this._filter) {
+  onChange(f: <P extends { _id: string }, N extends { _id: string }, PP extends any[]>(args: { prev: P, next: N, predicatePassed: PP }) => any, filter?: typeof this._filter) {
     let obj = {
       collection: this._name,
       f: f,
