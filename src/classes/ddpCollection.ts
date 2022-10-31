@@ -82,7 +82,7 @@ export class ddpCollection<T> {
    * sort is a standard js array sort function.
    * @return {Object}
    */
-  fetch(settings?: { skip?: number; limit?: number; sort?: ((a: any, b: any) => number) | boolean }) {
+  fetch(settings?: { skip?: number; limit?: number; sort?: ((a: T, b: T) => number) | boolean }) {
     let skip, limit, sort;
 
     if (settings) {
