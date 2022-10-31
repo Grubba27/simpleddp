@@ -9,7 +9,7 @@ import { ddpReactiveCollection } from "./ddpReactiveCollection";
  * reactive object won't change when corresponding object is being deleted.
  */
 
-export class ddpReactiveDocument {
+export class ddpReactiveDocument<T> {
   private _ddpReactiveCollectionInstance: any;
   private _started: boolean;
   private readonly _data: {};
@@ -17,7 +17,7 @@ export class ddpReactiveDocument {
   private _preserve: boolean;
 
 
-  constructor(ddpReactiveCollectionInstance: ddpReactiveCollection, settings: { preserve: any; } | null) {
+  constructor(ddpReactiveCollectionInstance: ddpReactiveCollection<T>, settings: { preserve: any; } | null) {
     this._ddpReactiveCollectionInstance = ddpReactiveCollectionInstance;
     this._started = false;
     this._data = {};
@@ -85,7 +85,7 @@ export class ddpReactiveDocument {
    * @return {Object}
    */
   data() {
-    return this._data;
+    return this._data as T;
   }
 
   /**

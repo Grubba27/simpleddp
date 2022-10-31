@@ -41,6 +41,7 @@ class ddpCollection {
         const c = typeof data === 'string' ? ejson_1.default.parse(data) : data;
         if (c[this._name]) {
             c[this._name].forEach((doc, i, arr) => {
+                // @ts-ignore
                 if (!this._filter || (this._filter && typeof this._filter === 'function' && this._filter(doc, i, arr))) {
                     this.ddpConnection.emit('added', {
                         msg: 'added',

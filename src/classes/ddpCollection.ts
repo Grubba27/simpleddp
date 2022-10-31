@@ -11,9 +11,9 @@ import simpleDDP from "../simpleDDP";
  * @param {simpleDDP} server - simpleDDP instance.
  */
 
-export class ddpCollection {
+export class ddpCollection<T> {
 
-  private _filter: boolean | ((...args: any[]) => number) = false;
+  private _filter: boolean | ((value: T, index: number, array: T[]) => value is any) = false;
   private _name: string;
   private _server: any;
   private ddpConnection: any;
@@ -30,7 +30,7 @@ export class ddpCollection {
    * @param {Function} f - Filter function, recieves as arguments object, index and array.
    * @return {this}
    */
-  filter(f: boolean | ((...args: any[]) => number) = false) {
+  filter<S extends T>(f: boolean | ((value: T, index: number, array: T[]) => value is S) = false) {
     this._filter = f;
     return this;
   }
@@ -46,6 +46,7 @@ export class ddpCollection {
 
     if (c[this._name]) {
       c[this._name].forEach((doc: { _id: string; fields: {}; }, i: number, arr: { _id: string; fields: {}; }[]) => {
+        // @ts-ignore
         if (!this._filter || (this._filter && typeof this._filter === 'function' && this._filter(doc, i, arr))) {
           this.ddpConnection.emit('added', {
             msg: 'added',
@@ -96,7 +97,7 @@ export class ddpCollection {
     if (sort) collectionCopy.sort(sort);
     if (typeof skip === 'number') collectionCopy.splice(0, skip);
     if (typeof limit === 'number' || limit == Infinity) collectionCopy.splice(limit);
-    return collectionCopy;
+    return collectionCopy as T[];
   }
 
   /**
@@ -107,7 +108,7 @@ export class ddpCollection {
    * @return {ddpReactiveCollection}
    */
   reactive(settings: { skip?: number | undefined; limit?: number | undefined; sort?: false | ((a: any, b: any) => number) | undefined; } | undefined) {
-    return new ddpReactiveCollection(this, settings, this._filter  as ((...args: any[]) => number));
+    return new ddpReactiveCollection<T>(this, settings, this._filter );
   }
 
   /**

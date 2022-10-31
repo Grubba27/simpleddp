@@ -192,8 +192,8 @@ class simpleDDP {
    * @param {string} name - Collection name.
    * @return {ddpCollection}
    */
-  collection(name: string) {
-    return new ddpCollection(name, this);
+  collection<T>(name: string) {
+    return new ddpCollection<T>(name, this);
   }
 
   /**

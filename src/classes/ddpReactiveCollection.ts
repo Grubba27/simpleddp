@@ -11,14 +11,14 @@ import { ddpCollection } from "./ddpCollection";
  * @param {Function} [filter=undefined] - Filter function.
  */
 
-export class ddpReactiveCollection {
+export class ddpReactiveCollection<T> {
   private _skip: number;
   private _limit: number;
   private _sort: false | ((a: any, b: any) => number);
   private _length: { result: number } = { result: 0 };
   private _data: any[] = [];
   private _rawData: any[] = [];
-  private _reducers: ddpReducer<any, any, any>[] = [];
+  private _reducers: ddpReducer<any, any, any, T>[] = [];
   private _tickers: any[] = [];
   private _ones: any[] = [];
   private _first = {}
@@ -26,7 +26,7 @@ export class ddpReactiveCollection {
   private _changeHandler;
   private started: boolean;
 
-  constructor(ddpCollectionInstance: ddpCollection, settings?: { skip?: number, limit?: number, sort?: false | ((a: any, b: any) => number) }, filter?: (...doc: any[]) => number) {
+  constructor(ddpCollectionInstance: ddpCollection<T>, settings?: { skip?: number; limit?: number; sort?: false | ((a: any, b: any) => number) }, filter?: boolean | ((value: T, index: number, array: T[]) => value is any)) {
     this._skip = settings && typeof settings.skip === 'number' ? settings.skip : 0;
     this._limit = settings && typeof settings.limit === 'number' ? settings.limit : Infinity;
     this._sort = settings && typeof settings.sort === 'function' ? settings.sort : false;
@@ -45,6 +45,8 @@ export class ddpReactiveCollection {
       return ddpCollectionInstance.fetch.call(ddpCollectionInstance, options);
     };
 
+    // @ts-ignore
+    // @ts-ignore
     this._changeHandler = ddpCollectionInstance.onChange(({ prev, next, predicatePassed }) => {
       if (prev && next) {
         if (predicatePassed[0] == 0 && predicatePassed[1] == 1) {
@@ -90,7 +92,8 @@ export class ddpReactiveCollection {
       this._tickers.forEach((ticker) => {
         ticker(this.data());
       });
-    }, filter ? filter : (_: any) => 1);
+      //@ts-ignore
+    }, filter ? filter : (_) => 1);
 
     this.started = false;
 
@@ -190,7 +193,7 @@ export class ddpReactiveCollection {
    * @private
    * @param {ddpReducer} reducer - A ddpReducer object that needs to be updated on changes.
    */
-  _activateReducer<RArgs extends [any[], any, number, any[]], RResult, RInit>(reducer: ddpReducer<RArgs, RResult, RInit>) {
+  _activateReducer<RArgs extends [any[], any, number, any[]], RResult, RInit>(reducer: ddpReducer<RArgs, RResult, RInit, T>) {
     this._reducers.push(reducer);
   }
 
@@ -208,7 +211,7 @@ export class ddpReactiveCollection {
    * @private
    * @param {ddpReducer} reducer - A ddpReducer object that does not need to be updated on changes.
    */
-  _deactivateReducer<RArgs extends [any[], any, number, any[]], RResult, RInit>(reducer: ddpReducer<RArgs, RResult, RInit>) {
+  _deactivateReducer<RArgs extends [any[], any, number, any[]], RResult, RInit>(reducer: ddpReducer<RArgs, RResult, RInit, T>) {
     let i = this._reducers.indexOf(reducer);
     if (i > -1) {
       this._reducers.splice(i, 1);
@@ -220,7 +223,7 @@ export class ddpReactiveCollection {
    * @private
    * @param {ddpReactiveDocument} o - A ddpReducer object that does not need to be updated on changes.
    */
-  _deactivateReactiveObject<RArgs extends [any[], any, number, any[]], RResult, RInit>(o: ddpReducer<RArgs, RResult, RInit>) {
+  _deactivateReactiveObject<RArgs extends [any[], any, number, any[]], RResult, RInit>(o: ddpReducer<RArgs, RResult, RInit, T>) {
     let i = this._ones.indexOf(o);
     if (i > -1) {
       this._ones.splice(i, 1);
@@ -243,7 +246,7 @@ export class ddpReactiveCollection {
    * @param {Object} [settings={skip:0,limit:Infinity,sort:false}] - Object for declarative reactive collection slicing.
    * @return {this}
    */
-  settings(settings: { skip?: number; limit?: typeof Infinity; sort?: false | ((a: any, b: any) => number); }) {
+  settings(settings: { skip?: number; limit?: typeof Infinity; sort?: false | ((a: T, b: T) => number); }) {
     let skip, limit, sort;
 
     if (settings) {
@@ -315,7 +318,7 @@ export class ddpReactiveCollection {
    * @param {Function} f - A function used for sorting.
    * @return {this}
    */
-  sort(f: false | ((a: any, b: any) => number)) {
+  sort(f: false | ((a: T, b: T) => number)) {
     this._sort = f;
     if (this._sort) {
       this._rawData.splice(0, this._rawData.length, ...this._syncFunc(0, 0, this._sort));
@@ -352,10 +355,11 @@ export class ddpReactiveCollection {
    * @param {Function} f - Function that produces an element of the new Array.
    * @return {ddpReducer} - Object that allows to get reactive mapped data @see ddpReducer.
    */
-  map(f: (arg0: any, arg1: any, arg2: any) => any) {
+  // @ts-ignore
+  map<Arr extends any[]>(f: (arg0: T, arg1: number, arg2: any[]) => Arr) {
     return new ddpReducer(this, function (accumulator, el, i, a) {
       return accumulator.concat(f(el, i, a));
-    }, []);
+    }, []) as unknown as Arr
   }
 
   /**
@@ -386,7 +390,7 @@ export class ddpReactiveCollection {
    * @return {ddpReactiveDocument} - Object that allows to get reactive object based on reduced reactive local collection @see ddpReactiveDocument.
    */
   one(settings: { preserve: any; } | null) {
-    return new ddpReactiveDocument(this, settings);
+    return new ddpReactiveDocument<T>(this, settings);
   }
 
 }

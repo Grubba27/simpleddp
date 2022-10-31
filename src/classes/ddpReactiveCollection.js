@@ -34,6 +34,8 @@ class ddpReactiveCollection {
             }
             return ddpCollectionInstance.fetch.call(ddpCollectionInstance, options);
         };
+        // @ts-ignore
+        // @ts-ignore
         this._changeHandler = ddpCollectionInstance.onChange(({ prev, next, predicatePassed }) => {
             if (prev && next) {
                 if (predicatePassed[0] == 0 && predicatePassed[1] == 1) {
@@ -79,6 +81,7 @@ class ddpReactiveCollection {
             this._tickers.forEach((ticker) => {
                 ticker(this.data());
             });
+            //@ts-ignore
         }, filter ? filter : (_) => 1);
         this.started = false;
         this.start();
@@ -318,6 +321,7 @@ class ddpReactiveCollection {
      * @param {Function} f - Function that produces an element of the new Array.
      * @return {ddpReducer} - Object that allows to get reactive mapped data @see ddpReducer.
      */
+    // @ts-ignore
     map(f) {
         return new ddpReducer_js_1.ddpReducer(this, function (accumulator, el, i, a) {
             return accumulator.concat(f(el, i, a));

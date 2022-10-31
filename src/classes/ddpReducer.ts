@@ -9,7 +9,7 @@ import { ddpReactiveCollection } from "./ddpReactiveCollection";
  * @param {*} initialValue - Initial value for a reduction function.
  */
 
-export class ddpReducer<RArgs extends [any[], any, number, any[] ], RResult, RInit> {
+export class ddpReducer<RArgs extends [any[], any, number, any[] ], RResult, RInit, TCol> {
   private _ddpReactiveCollectionInstance: any;
   private readonly _reducer: (...args: RArgs) => RResult;
   private _started: boolean = false;
@@ -18,7 +18,7 @@ export class ddpReducer<RArgs extends [any[], any, number, any[] ], RResult, RIn
   private readonly _initialValue: RInit;
 
   constructor(
-    ddpReactiveCollectionInstance: ddpReactiveCollection,
+    ddpReactiveCollectionInstance: ddpReactiveCollection<TCol>,
     reducer: (...args: RArgs) => RResult,
     initialValue: RInit
   ) {
